@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import com.hosptialBooking.PatientAppointment.entity.Appointment;
 import com.hosptialBooking.PatientAppointment.entity.Doctor;
@@ -51,8 +52,8 @@ public class BookingController {
 	 * @return list of all patient records
 	 */
  	@GetMapping("/patients")
- 	public List<Patient> retrievePatients(){
- 		return patientService.retrievedAllPatients();
+ 	public List<Patient> retrievePatients(@RequestHeader("Authorization")final String authorization){
+ 		return patientService.retrievedAllPatients(authorization);
  		
  	}
 

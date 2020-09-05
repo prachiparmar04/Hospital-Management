@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import com.hosptialBooking.PatientAppointment.entity.Patient;
 import com.hosptialBooking.PatientAppointment.exceptions.UserNotFoundException;
+import com.hosptialBooking.PatientAppointment.feign.AuthFeignClient;
 import com.hosptialBooking.PatientAppointment.repository.PatientRepository;
 
 /**
@@ -24,16 +25,34 @@ public class PatientService {
 	 */
 	@Autowired
 	private  PatientRepository patRepository;
-
+	@Autowired
+	AuthFeignClient authClient;
 	/**
 	 * 
 	 * @return list of all patient records
 	 */
 
-	public List<Patient> retrievedAllPatients() {
-	
+	public List<Patient> retrievedAllPatients(String authorization) {
+		List<Patient> patients = patRepository.findAll();
+		final boolean response = authClient.validate(authorization);
+		
+		if (response) {
+//			log.info("Date input given.");
+//			log.debug("Entering Service layer");
+			
+			if(!patients.isEmpty()) {
+				return patients;
+			}
+			else
+			{
+				throw new UserNotFoundException("Data Empty"); 
+			}
+			
+		} else {
+			throw new UserNotFoundException("USER UNAUTHORIZED");
+		}
 
-		return patRepository.findAll();
+		
 
 	}
 

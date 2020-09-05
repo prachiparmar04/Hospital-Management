@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hosptialbooking.AppointmentDashboard.entity.Booking;
@@ -41,7 +42,7 @@ public class DashboardController {
 	 * @return booking for that appointment_id
 	 */
 	@GetMapping("/booking/{appointment_id}")
-	public Booking getBooking(@PathVariable int appointment_id) {
+	public Booking getBooking(@PathVariable int appointment_id,@RequestHeader("Authorization")final String authorization) {
 		Booking booking = service.createBooking(appointment_id);
 		if(booking == null) {
 			throw new UserNotFoundException("Controller : not found id: "+ appointment_id);

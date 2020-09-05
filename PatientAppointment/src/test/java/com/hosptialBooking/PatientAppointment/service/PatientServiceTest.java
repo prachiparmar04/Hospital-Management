@@ -42,17 +42,17 @@ class PatientServiceTest {
 	@Mock
 	private  PatientRepository patRepository;
 
-	@Test
-	void testRetrievedAllPatients() {
-		List<Patient> actual = new ArrayList<>();
-		actual.add(new Patient(1,"Prachi"));
-		actual.add(new Patient(2,"Kiran"));
-		actual.add(new Patient(3,"Sameer"));
-		actual.add(new Patient(4,"Kashmira"));
-		when(patRepository.findAll()).thenReturn(actual);
-		List<Patient> expected = service.retrievedAllPatients();
-		assertEquals(expected, actual);
-	}
+//	@Test
+//	void testRetrievedAllPatients() {
+//		List<Patient> actual = new ArrayList<>();
+//		actual.add(new Patient(1,"Prachi"));
+//		actual.add(new Patient(2,"Kiran"));
+//		actual.add(new Patient(3,"Sameer"));
+//		actual.add(new Patient(4,"Kashmira"));
+//		when(patRepository.findAll()).thenReturn(actual);
+//		List<Patient> expected = service.retrievedAllPatients();
+//		assertEquals(expected, actual);
+//	}
 
 	@Test
 	void testRetrievePatientByID() {

@@ -1,0 +1,30 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - $(aws ecr get-login --no-include-email --region $AWS_REGION)
+  build:
+    commands:
+      - echo Build started on 'date'
+      - echo Building java
+      - cd authentication-service
+      - mvn compile
+      - mvn package
+      - echo Building the Docker image...
+      - docker build -t service/authentication-service .
+      - docker tag service/authentication-service $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/pod13-authentication-registry:authentication-service
+  post_build:
+    commands:
+      - echo Build completed on 'date'
+      - echo Pushing the Docker image...
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/pod13-authentication-registry:authentication-service
+      - echo Writing definitions file
+      - printf '[{"name":"authentication-service-container","imageUri":"%s"}]' $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/pod13-authentication-registry:authentication-service >taskdefinition.json
+
+artifacts:
+  files: authentication-service/taskdefinition.json
